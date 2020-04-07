@@ -3,15 +3,32 @@
 > 便于个人查找的一些NAS文章的梳理以及简要Digest
 > 采用了与[Awesome-NAS](https://github.com/D-X-Y/Awesome-NAS)不同的逐模块   梳理方式，便于个人理解与速查
 
-## Genre
+## Paper List
+
+> 有编号的文章是早期比较重要的文章，Follow其的文章，会用9-A的格式来标注
+
+|Title 📕|Source 🎓|Code 💻|Component 🔨|Property 💠|
+|--|--|--|--|--|
+|[1. Neural Architecture Search with Reinforcement Learning](https://arxiv.org/pdf/1611.01578)|ICLR2017(1611) *Zoph.* at Google Brain| - | Flow |NAS Flow|
+|[2. Accelerating Neural Architecture Search Using Performance Prediction](https://arxiv.org/pdf/1705.10823)|ICLR2018W(1705) *Baker* at MIT| - |Evaluator|Predictor-based Evaluator|
+|[3. eNAS - Efficient Architecture Search by network transformation](https://arxiv.org/abs/1707.04873)|AAAI2018(1707) *Cai* at SJTU|-|Flow/Weights-Manager|Shared Weights/Mutation from Existing Network/RL Controller|
+|[4. Learning Transferable Architectures for Scalable Image Recognition](https://arxiv.org/pdf/1707.07012.pdf)|CVPR2018(1707) *Zoph* Google Brain|-|Search Space|Cell-based Search Space|
+|[5. HyperNet - SMASH: One-Shot Model Architecture Search through HyperNetworks](https://arxiv.org/abs/1708.05344)|ICLR2017 *Brook*|-|Weights-Manager/Evaluator|HyperNet 2 Produce SubNet's Weight|
+|[6. ENAS - Efficient Neural Architecture Search via Parameter Sharing](https://arxiv.org/pdf/1802.03268.pdf)|ICML2018(1802) *Pham* (at) Google Brain|-|Flow/Weight-Manager/Evaluator|Shared Weights Flow|
+|[7. DARTS - Differentiable Architecture Search](https://arxiv.org/pdf/1806.09055)|ICLR2019(1806) *Liu* (at) Google Brain|-|Flow/Controller|Gradient-based Flow|
+|[7-A. SNAS - Stochastic Architecture Search](https://arxiv.org/pdf/1812.09926)|ICLR2019(1812) *Xie* (at) SenseTime |-|Controller|Gradient-based Flow|
+|[8. Hierarchical Representations for Efficient Architecture Search](https://arxiv.org/pdf/1711.00436)|ICLR2018(1711) *Liu* (at) Google Brain|-|Search Space|Hierarchical SS|
+|[9. Progressive Neural Architecture Search](https://arxiv.org/abs/1712.00559)|ECCV2018(1712) *Liu* (at) Google AI|-|Controller|Predictor-based/Easy2Hard|
+|[10. NAO - Neural Architecture Optimization](https://arxiv.org/abs/1808.07233)|NIPS2018(1808) *Luo* (at) MSRA|-|Evaluator|Predictor-based/Gradient-based|
+|---------------------------------------------------------|--------------------------|-----|--------------------|--------------------|
+|[A Survey on Neural Architecture Search](https://arxiv.org/pdf/1905.01392.pdf)|Arxiv(1905) *Martin* at IBM|-|Survey|-|
 
 
 ## Paper Digest
 
 
 ```
------------------------------------
-* Format
+---------------Format---------------
 * 🔑 Key:         核心
 * 🎓 Source:      来源
 * 🌱 Motivation:  故事
@@ -20,14 +37,6 @@
 * 💡 Ideas:       想法
 -----------------------------------
 ```
-
-
-* 🔑 Key:         
-* 🎓 Source:      
-* 🌱 Motivation:  
-* 💊 Methodology: 
-* 📐 Exps:       
-* 💡 Ideas:       
 
 
 #### 1. [NAS with RL](https://arxiv.org/pdf/1611.01578.pdf) - Google Brain
@@ -144,40 +153,7 @@
      * 比如DropPath之类的东西
    * [Meta-Pruning(ICCV2019)](https://arxiv.org/pdf/1903.10258)和这个有点像的
 
-
-#### 6. [Hierarchical Representations for Efficient Architecture Search](https://shimo.im/sheets/TkdXd9ptKTjDY83R/MODOC)
-* 🔑 Key:     
-  * **Hierarchical Search Space** 
-* 🎓 Source:   
-  * ICLR2018 / Google Brain   
-* 🌱 Motivation:  
-  * 流行的Cell-Based的架构相对general，但是有predefined的meta-arch(比如这几个Cell应该怎么堆叠之类的)不够general
-* 💊 Methodology: 
-  * hierarchical genetic representation
-    * 模仿的是modularized design pattern
-  * 采用了EA，指出最naive的random search也可以获得不错的效果
-  * flat representation - 将NN作为一个DAG
-    * 小的graph motif组成一个大的graph motif
-    * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200308204233.png)
-  * Tournament Selection Search
-* 📐 Exps:       
-* 💡 Ideas: 
-
-#### 7. [PNAS - Progressive Neural Architecture Search](https://arxiv.org/abs/1712.00559)
-* 🔑 Key:      
-  * **Progressive** -> Easy2Hard
-* 🎓 Source:
-  * ECCV 2018 / Google AI      
-* 🌱 Motivation:  
-  * Progressive (Simple 2 Complex)
-* 💊 Methodology:
-  * Cell-based Search Space 
-  * NO RL or EA, Sequential-Model-Based Method
-  * 每一步做一个局部的Heuristic Search，以前一步的Predictor来选取下一次的Predictor
-* 📐 Exps:       
-* 💡 Ideas:   
-
-#### 8. [Efficient Neural Architecture Search via Parameter Sharing](https://arxiv.org/pdf/1802.03268.pdf)
+#### 6. [Efficient Neural Architecture Search via Parameter Sharing](https://arxiv.org/pdf/1802.03268.pdf)
 
 * 🔑 Key:
   * **SuperNet**
@@ -200,7 +176,7 @@
 
 
 
-#### 9. [DARTS：Differentiable Architecture Search](https://arxiv.org/pdf/1806.09055.pdf)
+#### 7. [DARTS：Differentiable Architecture Search](https://arxiv.org/pdf/1806.09055.pdf)
 
 * 🔑 Key:     
   * **离散搜索 -> Gradient-based**    
@@ -224,7 +200,42 @@
 * 💡 Ideas: 
 
 
-#### 9-1. [SNAS-Stochastic NAS](https://arxiv.org/pdf/1812.09926.pdf)
+
+#### 8. [Hierarchical Representations for Efficient Architecture Search](https://shimo.im/sheets/TkdXd9ptKTjDY83R/MODOC)
+* 🔑 Key:     
+  * **Hierarchical Search Space** 
+* 🎓 Source:   
+  * ICLR2018 / Google Brain   
+* 🌱 Motivation:  
+  * 流行的Cell-Based的架构相对general，但是有predefined的meta-arch(比如这几个Cell应该怎么堆叠之类的)不够general
+* 💊 Methodology: 
+  * hierarchical genetic representation
+    * 模仿的是modularized design pattern
+  * 采用了EA，指出最naive的random search也可以获得不错的效果
+  * flat representation - 将NN作为一个DAG
+    * 小的graph motif组成一个大的graph motif
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200308204233.png)
+  * Tournament Selection Search
+* 📐 Exps:       
+* 💡 Ideas: 
+
+#### 9. [PNAS - Progressive Neural Architecture Search](https://arxiv.org/abs/1712.00559)
+* 🔑 Key:      
+  * **Progressive** -> Easy2Hard
+* 🎓 Source:
+  * ECCV 2018 / Google AI      
+* 🌱 Motivation:  
+  * Progressive (Simple 2 Complex)
+* 💊 Methodology:
+  * Cell-based Search Space 
+  * NO RL or EA, Sequential-Model-Based Method
+  * 每一步做一个局部的Heuristic Search，以前一步的Predictor来选取下一次的Predictor
+* 📐 Exps:       
+* 💡 Ideas:   
+
+
+
+#### 7-A. [SNAS-Stochastic NAS](https://arxiv.org/pdf/1812.09926.pdf)
 
 * 🔑 Key: 
   * **Gumble Softmax** in DARTS    
