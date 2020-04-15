@@ -14,14 +14,47 @@
 |[3. eNAS - Efficient Architecture Search by network transformation](https://arxiv.org/abs/1707.04873)|AAAI2018(1707) *Cai* at SJTU|-|Flow/Weights-Manager|Shared Weights/Mutation from Existing Network/RL Controller|
 |[4. Learning Transferable Architectures for Scalable Image Recognition](https://arxiv.org/pdf/1707.07012.pdf)|CVPR2018(1707) *Zoph* Google Brain|-|Search Space|Cell-based Search Space|
 |[5. HyperNet - SMASH: One-Shot Model Architecture Search through HyperNetworks](https://arxiv.org/abs/1708.05344)|ICLR2017 *Brook*|-|Weights-Manager/Evaluator|HyperNet 2 Produce SubNet's Weight|
+|[5-A. Graph HyperNetwork for Neural Architecture Search](https://arxiv.org/abs/1810.05749)|ICLR2019 *Chris Zhang* Toronto|-|Weights-Manager/Evaluator|HyperNet 2 Produce SubNet's Weight|
 |[6. ENAS - Efficient Neural Architecture Search via Parameter Sharing](https://arxiv.org/pdf/1802.03268.pdf)|ICML2018(1802) *Pham* (at) Google Brain|-|Flow/Weight-Manager/Evaluator|Shared Weights Flow|
 |[7. DARTS - Differentiable Architecture Search](https://arxiv.org/pdf/1806.09055)|ICLR2019(1806) *Liu* (at) Google Brain|-|Flow/Controller|Gradient-based Flow|
 |[7-A. SNAS - Stochastic Architecture Search](https://arxiv.org/pdf/1812.09926)|ICLR2019(1812) *Xie* (at) SenseTime |-|Controller|Gradient-based Flow|
+|[7-B. DARTS-nds - On Network Design Spaces for Visual Recognition](https://arxiv.org/pdf/1905.13214.pdf)|ICCV2019(1905) *IIija* (at) FAIR |-|SS|Improved NAS SS|
 |[8. Hierarchical Representations for Efficient Architecture Search](https://arxiv.org/pdf/1711.00436)|ICLR2018(1711) *Liu* (at) Google Brain|-|Search Space|Hierarchical SS|
 |[9. Progressive Neural Architecture Search](https://arxiv.org/abs/1712.00559)|ECCV2018(1712) *Liu* (at) Google AI|-|Controller|Predictor-based/Easy2Hard|
 |[10. NAO - Neural Architecture Optimization](https://arxiv.org/abs/1808.07233)|NIPS2018(1808) *Luo* (at) MSRA|-|Evaluator|Predictor-based/Gradient-based|
-|---------------------------------------------------------|--------------------------|-----|--------------------|--------------------|
+|---------------------------------------------|-----------------|-----|--------------------|--------------------|
 |[A Survey on Neural Architecture Search](https://arxiv.org/pdf/1905.01392.pdf)|Arxiv(1905) *Martin* at IBM|-|Survey|-|
+|[Accelerator-Aware Neural Network Design Using AutoML](https://arxiv.org/abs/2003.02838)|MLsys20-W Gupta|-|Hardware|NAS4Accelerator|
+|[MTL-NAS: Task-Agnostic Neural Architecture Search towards General-Purpose Multi-Task Learning](https://arxiv.org/abs/2003.14058)|CVPR2020 Gao|-|Flow|NAS + MultiTasking|
+|[GreedyNAS: Towards Fast One-Shot NAS with Greedy Supernet](https://arxiv.org/abs/2003.11236)|CVPR2020 You|-|Weights-Manager/Evaluator|Improvement of HyperNet|
+|[How to Train Your Super-Net: An Analysis of Training Heuristics in Weight-Sharing NAS](https://arxiv.org/abs/2003.04276)|Arxiv(2003)|-|One-Shot|Analysis for Training One-Shot|
+|[Disturbance-immune Weight Sharing for Neural Architecture Search](https://arxiv.org/abs/2003.13089)|Arxiv(2003) Niu|-|One-Shot|Improve Weight -Sharing|
+|[NPENAS:Neural Predictor Guided Evolution for Neural Architecture Search](https://arxiv.org/abs/2003.12857)|Arxiv(2003) Wei|-|Predictor|Predictor+Evo|
+|[DA-NAS:Data Adapted Pruning for Efficient Neural Architecture Search ](https://arxiv.org/abs/2003.12563)|Arxiv(2003) Dai|-|Flow|Speed up NAS flow via triming blocks|
+|[MiLeNAS: Efficient Neural Architecture Search via Mixed-Level Reformulation](https://arxiv.org/abs/2003.12238)|Arxiv(2003) He|-|Gradient-based Flow|Bi-level Optimization lead to Sub-optimal|
+|[Are Labels Necessary for Neural Architecture Search? ](https://arxiv.org/abs/2003.12056)|Arxiv(2003) Liu & Kaiming|-|Evaluator|Unsupervised Learning for NAS Evaluator|
+|[Sampled Training and Node Inheritance for Fast Evolutionary Neural Architecture Search](https://arxiv.org/abs/2003.11613)|Arxiv(2003) Zhang|-|Controller|Faster EVO|
+|[BigNAS: Scaling Up Neural Architecture Search with Big Single-Stage Models](https://arxiv.org/abs/2003.11142)|Arxiv(2003) Yu|-|Shared-Weights|No Retraining Weight(like OFA)|
+|[PONAS: Progressive One-shot Neural Architecture Search for Very Efficient Deployment](https://arxiv.org/abs/2003.05112)|Arxiv(2003) Huang|-|Evaluator|Progressive+One-shot|
+|[Steepest Descent Neural Architecture Optimization: Escaping Local Optimum with Signed Neural Splitting](https://arxiv.org/abs/2003.10392)|Arxiv(2003) Wu|-|Evaluator|Improved NAO Flow,escape Local minima|
+|[Real-time Federated Evolutionary Neural Architecture Search](https://arxiv.org/abs/2003.02793)|Arxiv(2020) Zhu|-|Flow|Evo+Federated Learning|
+|[ADWPNAS: Architecture-Driven Weight Prediction for Neural Architecture Search](https://arxiv.org/abs/2003.01335)|Arxiv(2020) Zhang|-|Evaluator(HyperNet)|HyperNet Improve|
+|[BS-NAS: Broadening-and-Shrinking One-Shot NAS with Searchable Numbers of Channels](https://arxiv.org/abs/2003.09821)|Arxiv(2003) Shen|-|Evaluator/Weights-Manager|Controllable Shared-Weights|
+|[Hit-Detector: Hierarchical Trinity Architecture Search for Object Detection](https://arxiv.org/abs/2003.11818)|Arxiv(2003) Guo|-|Task|HierNAS + Det|
+|[DCNAS: Densely Connected Neural Architecture Search for Semantic Image Segmentation](https://arxiv.org/abs/2003.11883)|Arxiv(2003) Zhang|-|Task|NAS4Semantic Seg|
+|[Probabilistic Dual Network Architecture Search on Graphs](https://arxiv.org/abs/2003.09676)|Arxiv(2003) Zhao|-|Task|NAS4GNN|
+|[GAN Compression: Efficient Architectures for Interactive Conditional GAN](https://arxiv.org/abs/2003.08936)|Arxiv(2003) Li|-|Task|NAS4GAN|
+|[ElixirNet: Relation-aware Network Architecture Adaptation for Medical Lesion Detection](https://arxiv.org/abs/2003.08770)|Arxiv(2003) Jiang|-|Task|NAS+Medical|
+|[Lifelong Learning with Searchable Extension Units](https://arxiv.org/abs/2003.08559)|Arxiv(2003) Wang|-|Task|NAS+Continual Learning|
+|[Hierarchical Neural Architecture Search for Single Image Super-Resolution](https://arxiv.org/abs/2003.04619)|Arxiv(2003) Guo|-|Task|HierNAS4SR|
+|[BATS: Binary ArchitecTure Search](https://arxiv.org/abs/2003.01711)|Arxiv(2020) Bulat|-|Task|NAS4BNN|
+|[NAS-Count: Counting-by-Density with Neural Architecture Search](https://arxiv.org/abs/2003.00217)|Arxiv(2020) Hu|-|Task|Counting|
+
+
+
+
+
+
 
 
 ## Paper Digest
@@ -152,6 +185,35 @@
      * 比如lr schedule
      * 比如DropPath之类的东西
    * [Meta-Pruning(ICCV2019)](https://arxiv.org/pdf/1903.10258)和这个有点像的
+   * We hypothesize that so long as the HyperNet learns to generate reasonable weights, the validation
+error of networks with generated weights will correlate with the performance when using normally
+trained weights
+
+
+
+#### 5-A. [Graph HyperNetwork for Neural Architecture Search](https://arxiv.org/pdf/1810.05749.pdf)
+* 🔑 Key:  
+  * 图形式的Hypernet
+* 🎓 Source:  
+  * ICLR 2019 && Uber & Toronto Univ.
+* 🌱 Motivation: 
+  * 1st to Generate All Weights
+  * 多种HyperNet的方式：
+    * 3D Encoding Tensor
+    * LSTM Process a Sequence
+* 💊 Methodology: 
+  * SS
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200413183600.png)
+  * GNN(生成Graph Embedding)每个Node是一个LSTM，生成一个Embedding
+  * HyperNet就是一个MLP，对所有Node公用，输出大小固定
+    * 对于不同大小的Weight，用堆叠Kernel或者是Channel达成
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200413183534.png)
+  * *AnyTime Prediction* *Forward Backward Pass*  
+    * 更新的步骤仿照网络前向以及反向的步骤
+    * TimeStep 2V-1
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200413182757.png)
+* 💡 Ideas:     
+  * 所谓Motif的方式更为高效，搜索一个Cell，对于新的任务，就改变Cell的堆叠模式就可以了
 
 #### 6. [Efficient Neural Architecture Search via Parameter Sharing](https://arxiv.org/pdf/1802.03268.pdf)
 
@@ -357,8 +419,23 @@
   * Nb201 - 15625 - OP on Edge
 
 
+---
 
-
+### [How to Train Your Super-Net: An Analysis of Training Heuristics in Weight-Sharing NAS](https://arxiv.org/abs/2003.04276)
+* 🔑 Key:         
+  * Analysis of One-Shot NAS SuperNet Training
+* 🎓 Source:      
+  * Arxiv 2003
+* 🌱 Motivation:  故事
+  * 对于SuperNet训练的一个Ablation
+  * 需要好好调参，不应该用尽量少的epoch而应该用Subset
+* 💊 Methodology: 方法
+  * 用FairNAS作为平台
+  * **主要重点在于训练参数**(是否有Affine，LR，WD)
+  * 评价指标是超网络的准确率，超过随机搜索的概率,还有kendall-tau。
+  * 最后一个是从超网络随机采样200个挑3个最好的，取他们的ground-truth的平均
+* 📐 Exps:        实验
+* 💡 Ideas:       想法
 
 
 
@@ -372,5 +449,6 @@
 ## Reference
 
 * [Awesome-NAS](https://github.com/D-X-Y/Awesome-NAS)
+* [AutoML.org](https://www.automl.org/automl/literature-on-neural-architecture-search/)
 
  
