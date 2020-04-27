@@ -31,6 +31,8 @@
 |[Accelerator-Aware Neural Network Design Using AutoML](https://arxiv.org/abs/2003.02838)|MLsys20-W Gupta|-|Hardware|NAS4Accelerator|
 |[MTL-NAS: Task-Agnostic Neural Architecture Search towards General-Purpose Multi-Task Learning](https://arxiv.org/abs/2003.14058)|CVPR2020 Gao|-|Flow|NAS + MultiTasking|
 |[GreedyNAS: Towards Fast One-Shot NAS with Greedy Supernet](https://arxiv.org/abs/2003.11236)|CVPR2020 You|-|Weights-Manager/Evaluator|Improvement of HyperNet|
+|[EcoNAS: Finding Proxies for Economical Neural Architecture Search](https://arxiv.org/abs/2001.01233)|CVPR2020 Dong.|-|Weights-Manager|Evaluate Proxy|
+|[Improved one-shot NAS by suppressing posteriror fading](http://xxx.itp.ac.cn/pdf/1910.02543v1)|CVPR2020 Li|-|Weights-Manager|Bayesian+One-shot|
 |[How to Train Your Super-Net: An Analysis of Training Heuristics in Weight-Sharing NAS](https://arxiv.org/abs/2003.04276)|Arxiv(2003)|-|One-Shot|Analysis for Training One-Shot|
 |[Disturbance-immune Weight Sharing for Neural Architecture Search](https://arxiv.org/abs/2003.13089)|Arxiv(2003) Niu|-|One-Shot|Improve Weight -Sharing|
 |[NPENAS:Neural Predictor Guided Evolution for Neural Architecture Search](https://arxiv.org/abs/2003.12857)|Arxiv(2003) Wei|-|Predictor|Predictor+Evo|
@@ -66,12 +68,12 @@
 
 ```
 ---------------Format---------------
-* 🔑 Key:         核心
-* 🎓 Source:      来源
-* 🌱 Motivation:  故事
-* 💊 Methodology: 方法
-* 📐 Exps:        实验
-* 💡 Ideas:       想法
+* 🔑 Key:         
+* 🎓 Source:      
+* 🌱 Motivation:  
+* 💊 Methodology: 
+* 📐 Exps:        
+* 💡 Ideas:       
 -----------------------------------
 ```
 
@@ -342,12 +344,46 @@ trained weights
       * 用了Augmentation（flip）来训练encoder
 
 
-
-
-
-
-
-
+11. [ProxylessNAS: Direct Neural Architecture Search on Target Task and Hardware](https://arxiv.org/abs/1812.00332)
+* 🔑 Key:  
+  * 解决Gradient-based的方法有大量Memory Consumption，进而需要ProxyTask的协助
+  * multi-binary mask choice as path-level pruning       
+* 🎓 Source:      
+  * Han MIT
+* 🌱 Motivation: 
+  * Gradient-based方法网络显存占用大，对大任务来说困难。
+* 💊 Methodology: 
+  * 解决Gradient-based的方法有大量Memory Consumption，进而需要ProxyTask的协助    
+  * Path-level binarization(path level pruning)以减少现存消耗
+  * Latency regularization loss
+  * Network representation
+    * n edges - e_i
+    * N candidate primitive operations o_i
+    * each edge to be a mixed operation has N parallel paths
+    * given input x , output is outputs of N paths
+      * in One-shot means Sum
+      * in Darts means Weighted Sum
+        * weights is softmax of \alpha_i (N alphas)
+      * roughly needs N times GPU memory
+      * in this paper
+        * binray mask with probability of softmax weight in DARTS
+        * think the probability is StraightThrough
+  * training
+    * when training arch, freeze weight
+    * when training weight, only trains weights on active path
+  * How 2 actual solve the memory issue
+    * factorizing the task into choosing 1 path out of N candidates into multiple binary mask
+    * sample 2, only 2 paths are involved 
+    * use grad of these 2 path to update the arch weight of this 2 path
+    * because all path's arch weights needs softmax, so need a ratio for 2 paths, to keep the unsampled paths weight unchanged
+    * one path weight enhanced, the other attenuated
+* 📐 Exps:        
+* 💡 Ideas:     
+  * like One-shot and DARTS
+    * no need for meta-controller in shared-weights
+    * model NAS as a simple training of an over-parameterized network
+      * One-shot with DropPath
+    * Pruning - Path-level pruning for NAS  
 
 ---
 
@@ -570,10 +606,52 @@ trained weights
 * 💡 Ideas:
   * One-Stage Det: (Anchor-Free) whether have a region proposal step
 
+### [EcoNAS: Finding Proxies for Economical Neural Architecture Search](https://arxiv.org/abs/2001.01233)
+* 🔑 Key:     
+  * Evaluate different proxy    
+* 🎓 Source:      
+  * SDU & NanyangTU & SenseTime
+* 🌱 Motivation:  
+  * Finding a more stable proxy 
+* 💊 Methodology: 
+  * Grid searching different proxy
+    1. Channel num
+      * Smaller channel means even better(actually coordinates with less epochs)
+    2. Input resolution
+      * Pretty OK
+    3. Epochs
+      * Increase will be better, but with a bound
+      * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200427111503.png)
+    4. Dataset Size
+      * with smaller size, upper bound lower
+    5. Network depth
+      * DONT do that
+  * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200427111258.png)
+    * NASNet/AmoebaNet - bad proxy - (- network depth)
+* 📐 Exps:       
+* 💡 Ideas:  
 
 
-
-
+### [Improved one-shot NAS by suppressing posteriror fading](http://xxx.itp.ac.cn/pdf/1910.02543v1)
+* 🔑 Key:  
+  * Bayesian in Shared-Weights
+  * Posterior Convergent NAS   
+  * Bayesian to Solve posterior fading   
+    * Guide the parameter-posterior towards true dist  
+* 🎓 Source:      
+  * SDU / Brown / SenseTime
+* 🌱 Motivation:  
+  * Weight-Sharing: model perform better with shared weights doesnot necessarily better than trained alone
+* 💊 Methodology: 
+  * Formulate NAS in bayesian manner
+    * and prove that increasing number of arch will push p_shared away from p_alone, called **Posterior Fading**
+  * Mitigate PF
+    * training with partial model pool
+      * gradually shrink the ss
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200427114553.png)
+    * evaluation under latency constraint
+* 📐 Exps:        
+* 💡 Ideas:  
 
 
 
