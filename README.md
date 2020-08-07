@@ -22,11 +22,18 @@
 |[8. Hierarchical Representations for Efficient Architecture Search](https://arxiv.org/pdf/1711.00436)|ICLR2018(1711) *Liu* (at) Google Brain|-|Search Space|Hierarchical SS|
 |[9. Progressive Neural Architecture Search](https://arxiv.org/abs/1712.00559)|ECCV2018(1712) *Liu* (at) Google AI|-|Controller|Predictor-based/Easy2Hard|
 |[10. NAO - Neural Architecture Optimization](https://arxiv.org/abs/1808.07233)|NIPS2018(1808) *Luo* (at) MSRA|-|Evaluator|Predictor-based/Gradient-based|
-|---------------------------------------------|-----------------|-----|--------------------|--------------------|
+|-----------------Det------------------------|-----------------|-----|--------------------|--------------------|
 |[DetNAS: Backbone Search for Object Detection](http://arxiv.org/abs/1903.10979)|Arxiv(1903) *SunJian* at Megvii|-|Task|Shared-Weights4DetBackbone|
 |[NAS-FPN: Learning Scalable Feature Pyramid Architecture for Object Detection](http://arxiv.org/abs/1904.07392)|Arxiv(1904) *Quo V Le* at Google Brain|-|Task/Search Space|Search for FPN|
 |[EfficientDet: Scalable and Efficient Object Detection](http://arxiv.org/abs/1911.09070)|Arxiv(1911) *Quo V Le* at Google Brain|-|Task/Search Space|BiFPN+Weighted+Scalable Arch|
-|---------------------------------------------|-----------------|-----|--------------------|--------------------|
+|-----------------Binary------------------------|-----------------|-----|--------------------|--------------------|
+|[Binarizing MobileNet via Evolution-based Searching](http://arxiv.org/abs/2005.06305)|Arxiv(2005)|-|Task|Evo Search for group-conv MobileBlock|
+|[Searching for Accurate Binary Neural Architectures](http://arxiv.org/abs/1909.07378)|ICCVW19(1909) Huawei Noah|-|Task|Evo Search width for MobileBlock|
+|[Learning Architectures for Binary Networks](http://arxiv.org/abs/2002.06963)|ECCV2020(2002) GIST|-|Task|Darts+Binary|
+|[Binarized Neural Architecture Search](http://arxiv.org/abs/1911.10862)|AAAI2020(1911) Beihang|-|Task|Darts+Binary|
+|[CP-NAS: Child-Parent Neural Architecture Search for Binary Neural Networks](http://arxiv.org/abs/2005.00057)|CVPR2020(2005) Beihang|-|Task|Darts+Binary+Tch/Stu|
+|[BATS: Binary ArchitecTure Search](http://arxiv.org/abs/2003.01711)|ECCV2020(2003) Cambridge|-|Task|Darts+Binary|
+|-------------------Mixed---------------------|-----------------|-----|--------------------|--------------------|
 |[A Survey on Neural Architecture Search](https://arxiv.org/pdf/1905.01392.pdf)|Arxiv(1905) *Martin* at IBM|-|Survey|-|
 |[Accelerator-Aware Neural Network Design Using AutoML](https://arxiv.org/abs/2003.02838)|MLsys20-W Gupta|-|Hardware|NAS4Accelerator|
 |[MTL-NAS: Task-Agnostic Neural Architecture Search towards General-Purpose Multi-Task Learning](https://arxiv.org/abs/2003.14058)|CVPR2020 Gao|-|Flow|NAS + MultiTasking|
@@ -53,7 +60,6 @@
 |[ElixirNet: Relation-aware Network Architecture Adaptation for Medical Lesion Detection](https://arxiv.org/abs/2003.08770)|Arxiv(2003) Jiang|-|Task|NAS+Medical|
 |[Lifelong Learning with Searchable Extension Units](https://arxiv.org/abs/2003.08559)|Arxiv(2003) Wang|-|Task|NAS+Continual Learning|
 |[Hierarchical Neural Architecture Search for Single Image Super-Resolution](https://arxiv.org/abs/2003.04619)|Arxiv(2003) Guo|-|Task|HierNAS4SR|
-|[BATS: Binary ArchitecTure Search](https://arxiv.org/abs/2003.01711)|Arxiv(2020) Bulat|-|Task|NAS4BNN|
 |[NAS-Count: Counting-by-Density with Neural Architecture Search](https://arxiv.org/abs/2003.00217)|Arxiv(2020) Hu|-|Task|Counting|
 
 
@@ -652,6 +658,128 @@ trained weights
     * evaluation under latency constraint
 * 📐 Exps:        
 * 💡 Ideas:  
+
+### [Searching for Accurate Binary Neural Architectures](http://arxiv.org/abs/1909.07378)
+* Huawei Noah - ICCV19 W
+* WRPN uniform expand
+* only search for width(channels), acquire higher acc with less flops
+    * encode channel num into ss, EA as optimization
+* the arch remain the same with the original fp32 model
+* DoReFaNet Forward
+    * 除了第一层和最后一层
+* 4 is empirical upper bound of expansion ratio
+    * [0.25,0.5,1,2,3,4]
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200627094001.png)
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200627094100.png)
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200627094241.png)
+
+
+### [Learning Architectures for Binary Networks](http://arxiv.org/abs/2002.06963)
+* GIST(South Korea)
+* seems like eccv ...
+* 号称自己可以和SOTA的方法打平，而不用很多技巧，只是加大
+* cell-based, proposed a new cell template composed of binary operations
+* 首先实验直接对Darts等搜出来的结构直接用XNOR的binary scheme
+    * 效果很差(很合理)
+* novel-searching objective - Diversity Regularization  
+* SS design
+    * should be robust to quantization error
+    * dialted conv与一半conv对Q-error来说一致，这两者相对对Q-error比较鲁棒
+    * separable有很大的Q-error
+    * zeorise - 输出为0，原先是用来建模没有shortcut connection的过程
+        * 本质是因为有时候binary之后的误差实在是太大了，导致比直接把结果置0还大
+        * 保留这种层去减少Q-Error，而不是只是将其作为Placeholder(?)
+        * 有一个possibility是否包含zeroise
+* Cell Template Deisgn
+    * unstable gradient
+    * 强制不同Cell之间带Skip - InterCell Skip connection(less quantization error)
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200629131618.png)
+* Diversity Regularizer
+    * 同别的文章，一样发现了带参数的op一开始不容易被选中
+    * exponential annealed entropy regularizer
+
+* 看上去像是一个带Hotfix的方法，但是做的还是比较solid的
+
+
+### [Binarized Neural Architecture Search](http://arxiv.org/abs/1911.10862)
+* Beihang Univ
+* Darts foundation
+* channel sampling / operation space reduction0
+   * abbadon less potential operation
+* 基本就是PCDarts+Binary复述了一下…
+
+### [CP-NAS: Child-Parent Neural Architecture Search for Binary Neural Networks](http://arxiv.org/abs/2005.00057)
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200629140108.png)
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200629140956.png)
+    * sample without replacement 
+    * 对K个op每个sample过一次，，循环K次，之后做SS reduction
+* Pair Optimization for binary
+    * minimize distribution error between fp32 and binary
+    * minimize output-class inrta-class feature 
+
+* [BATS: Binary ArchitecTure Search](http://arxiv.org/abs/2003.01711)
+* Cambridge
+* 表示直接把NAS套用到binary domain会带来很大问题，所以需要一些操作去alleviate
+    * binarized ss
+    * search strategy (control and stablilze the searching)
+        * temperature-based
+* binary的方式
+    * follow XNORNet - 但是scaling factor 反传得到而不是analytically
+* search space
+    * 首先表示一个比较好的ss即使用random search也可以获得比较好的效果
+    * 认为depthwise本身已经是compact了，所以更难做binary - bottleneck也是
+        * high group size 去近似 depthwise
+        * 有尝试过在每个group之后加入一个channel shuffle,但是其实没有太好的效果，犹豫group一般比较大
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200627095554.png)
+* Search Strategy - 对DARTS的稳定收敛的各种操作
+    * 早期发现会很快收敛到real-value op(比如polling and skip-connect),早期比较有效
+    * 用temerpature来解决，让整个分布变得更加spiky
+* 2-Stage Search 由于Training Binary本身更困难一点
+    * weights real， activation binarized
+    * 个人感觉这个不大靠谱…也不一定…
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200627100500.png)
+
+### [APQ: Joint Search for Network Architecture, Pruning and Quantization Policy](http://arxiv.org/abs/2006.08509)
+* MIT Han
+* 将Arch，Prun以及Quantize unifify到一个方向
+* 超大SS,用一个Quantize Predictor
+    * 训练其需要一个{FP,QUAN}的Acc Pair,需要设计Quantize-aware finetune
+    * 借助Transefer Knowledge(从FP32 predictor到Quant predictor),显著提升Sample Eff
+* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200630235848.png)
+    * 主体是Evo+Predictor+Shared-Weights(OFA)
+* OFA Training - progressively distill smaller subnets sampled from the OFA
+    * MobileNet V2 Base
+    * to handle SS 过大的时候OFA的subnet不准
+* Quantization Predictor
+    * Arch and Quantize Policy encoding
+
+
+### [Binarizing MobileNet via Evolution-based Searching](http://arxiv.org/abs/2005.06305)
+
+* 🔑 Key:         
+	1. find a balanced bianry mobilenet, mainly in the group-conv domain
+	2. weight sharing 
+* 🎓 Source:      
+* 🌱 Motivation:  
+* 💊 Methodology: 
+	* BinaryScheme
+		* scaling factor and backprop like XNORNeto
+		* enhanced shortcut like MoBiNet & Birealnet
+		* Polynominal differentiable approximation like birealnet
+		* only weighs are binarized at train/testo
+	* Flow
+		1. pre-training
+		2. sample grouping strategy and EA 
+		3. determine the strategy and train from scratch
+	* module modification
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200724163159.png)
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200724163208.png)
+* 📐 Exps:        
+* 💡 Ideas:       
+	* depth-wise + point-wise = depth separable conv
+		* for binary the channel(depth)wise, less binary numbers are added together and has low precision, so cannot converge
+		* so group conv could be a surrogate
+
 
 
 
