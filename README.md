@@ -263,16 +263,153 @@ trained weights
   * Search Space如何设计
     * 一个Cell是一个DAG，Node是一个latent representation(代表Feature Map)，每个有向的边和某种操作(Op)有关
       * 每个op以softmax来relax，取各个实际操作(Max-pool/Conv/No)发生的概率
-    * 认为每个cell有两个输入一个输出，对卷积层输入来自previous 2 layer(? 2度近邻居？)
-    * N=7 Node,没有strided
+    * 认为每个cell有两个输入一个输出，对卷积层输入来自previous 2 layer
+      * cell一定有两个输入node来自于前两个block的输出
+    * N=7 Node
+  * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807192915.png)
+  * Relaxation
+    * just a softmax
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807183907.png)
+  * important approximation
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807192038.png)
+    * approximate the inner optimization(train the subnet until convergence), with just one step gradient optimization 
   * Bi-level Optimization
+    * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807184006.png)  
     * Learn Arch and Weight at the same time
-    * 注意实际对alpha导数是用的，而不是单纯的 \partial{L_val}/\partrial{\alpha}
+    * alpha的导数 \partial{L_val}/\partrial{\alpha}
       * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200312222701.png)
+      * 做了一个approx到O(alpha*w),到了O(alpha+weight)
   * ![](https://github.com/A-suozhang/MyPicBed/raw/master/img/20200312221224.png)
-* 📐 Exps:       
+* 📐 Exps:  
+  * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807193002.png)     
+* 💡 Ideas: 
+	* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/0401b088f9f6c5f80f137d093a29c4d.png)
+		* 注意derive的时候对每个node选择最大的2个edge
+	* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200808171250.png) 
+
+#### 7-1. [P-Darts:Progressive Differentiable Architecture Search: Bridging the Depth Gap between Search and Evaluation](http://arxiv.org/abs/1904.12760)
+* 🔑 Key:   
+  * ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807195111.png)
+  * 逐渐增加eval深度以解决depth gap![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200807195111.png)  
+* 🎓 Source: 
+  * Huawei Noah & Tongji
+* 🌱 Motivation: 
+  * 原本的darts在8个cell的情况下做训练并且derive出arch，但是最后导出模型的时候用的是20个cell的模型
+* 💊 Methodology:
+  * 正常的depth growth以及一个progressive pruning，逐渐prune被选到概率低的op
+    * 加了一个search space regularization,也就是operational level dropout
+    * 主要是为了解决搜索过程会逐渐趋向shortcut
+      * 以及强制restrict num of shortcut
+* 📐 Exps:
+* 💡 Ideas: 
+  * Path dropout的具体操作方式？某次sample的时候以0.1的概率某个edge不连接？失效(那有没有可能都失效了)
+
+#### 7-2. [PC-DARTS: Partial Channel Connections for Memory-Efficient Architecture Search](http://arxiv.org/abs/1907.05737)
+* 🔑 Key:   
+  * 根本原因是：假设错误
+    * 好的supernet不一定代表着好的子网络
+  * 正常训练会导致weight over-fitting于supernet(?)
+  * 解决方案： 随机采样部分的supernet channel
+* 🎓 Source:  
+* 🌱 Motivation: 
+  * 表示不同op的区别在一个batch的数据上体现的不明显，需要加大batch，就需要减小memory，所以就需要加大bs
+* 💊 Methodology:
+  * partial channel sampling
+    * sample出一部分channel，剩下的channel在计算中被bypass并且直接接到output上(类似于shortcut的形式)
+    * 优势：
+      * 认为只用一部分的channel，可以让选择op变得less biased(是conv和max之间，regularize了preference for weight-free operation)
+        * 可以认为这一条是在处理搜索早期更偏向无param的op，而且作者指出这种现象在Proxy task难的时候更加明显(比如imgnet)
+    * 劣势
+      * 由于每次forward sample出来的channel在变化，反而会让search变得更加unstable，解决这个问题提出了edge norm
+        * (?理解好像还是差点意思)
+      * 为每个edge再引入一个训练参数beta_ij(对每个edge做softmax),将alpha和beta乘起来作为原本的alpha
+        * 对每个edge引入一个norm的超参数
+        * 我理解为不让某个edge变得特别significant(?)
+        * 最后把alpha和beta相乘来决定op
+      * 由于不管采样出来的channel是啥，beta_ij是每个edge所独有的性质
+        * 可以认为类似是一种attention
+  * edge normalization: 
+    * 以增强搜索的稳定性（减小了search的uncertainty）
+* 📐 Exps:
 * 💡 Ideas: 
 
+
+#### 7-3. [GOLD-NAS: Gradual, One-Level, Differentiable](http://arxiv.org/abs/2007.03331)
+* 🔑 Key:   
+  * 革darts的命：
+    1. darts的bilevel-opt假设不对，引入问题，改
+		* 理论上会带来incorrect gradient estimation
+    2. darts的search-space heuristic太多，改
+    3. darts最终限制只能有一个op，改
+* 🎓 Source:  
+	* Huawei Noah
+* 🌱 Motivation: 
+	* start from a fully-connected network, then prune out
+	* eliminate op with flops constraint instead of heuristic rule
+* 💊 Methodology:
+	* 将softmax改成了elementw-wise的Sigmoid，为了不互斥，以满足每个edge上不仅留存一个op
+	* 由于不是单纯搜一个cell，而是各个cell独立，所以需要放下一个20cell的supernet
+		* 为了节省显存(我感觉有点牵强)，所以follow了其他几篇文章，每个edge只有两个op skip-connect以及sep-conv
+		* one-level optimization:
+			* 由于weight的数量太大了，导致很容易biased到拟合weight
+			* 当dataset大的时候one-level opt并没有问题，小dataset的时候用cutout以及autoaugment有效
+	* 原本的最后derive时候做discretize的时候直接做hard pruning(选取或者采样一个最高可能的op),会造成很大的error
+		* 这个方法不排除op，没有softmax的内部互斥，所以最优策略一定是保留所有op，所以要加regulariazation,用的是flops
+		* 同时如果某个op的prob足够小，设置一个阈值将它剪掉
+		* 叫做gradual pruning with resource constraint
+		* 控制权重的\lambda从0开始不断增加
+* 📐 Exps:
+* 💡 Ideas: 
+	* good description of the DARTS search space
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200808095049.png)
+	* DARTS的不合理的地方
+		* 每个edge只能保持一个op
+		* 每个inner node只能从前面获得两个输入(还没有在原文中找到这个细节，但是看搜出来的arch图里好像是有的)
+		* 所有的cell是共享的，low-level以及high-level的结构一致先然不合理
+
+#### 7-4. [DARTS+: Improved Differentiable Architecture Search with Early Stopping](http://arxiv.org/abs/1909.06035)
+* 🔑 Key:  
+  * 发现darts的supernet如果训练过多的epoch会collapse，导致所有的都是shortcut(学出来的架构很shallow，learnable param很少)
+  * 认为collapse的原因是cooperate and competition在bilevel opt当中
+    * competition存在于alpha与weight之间
+  * 解决方法是用了early stopping：就是接着训练，加了一些heuristic rule，满足的时候结束(seems like hot fix)
+* 🎓 Source:  
+* 🌱 Motivation: 
+  * 这种本来应该是cooperation变成competition的问题是由于bi-level optimization所产生的
+  * GAN中也会出现，当discriminator分离的足够好的时候，generator会遭遇gradient vanishment
+  * 说白了核心问题还是imbalanced training（对于alpha以及weight而言）
+* 💊 Methodology:
+  * 当一个cell中出现更多的skip的时候
+  * 当有较多个epoch alpha逐渐变得stable了
+* 📐 Exps:
+* 💡 Ideas: 
+
+#### 7-5. [Stabilizing DARTS with Amended Gradient Estimation on Architectural Parameters](http://arxiv.org/abs/1910.11831)
+* 🔑 Key: 
+  * 认为原先的bilevel opt对alpha梯度的错误更新(1st & 2nd order darts的近似都有问题)  
+* 🎓 Source:  
+* 🌱 Motivation: 
+  * 发现多训练supernet精度提升之后，采样出来的subnet acc会下降
+  * *也有别的paper认为supernet越好subnet就越好，只是discrete的形式不一样*
+* 💊 Methodology:
+* 📐 Exps:
+* 💡 Ideas: 
+
+#### 7-6. [Fair DARTS: Eliminating Unfair Advantages in Differentiable Architecture Search](https://arxiv.org/abs/1911.12126)
+* 🔑 Key:   
+* 🎓 Source:  
+* 🌱 Motivation: 
+* 💊 Methodology:
+* 📐 Exps:
+* 💡 Ideas: 
+
+#### 7-7. [Efficient Neural Architecture Search via Proximal Iterations](https://arxiv.org/abs/1911.12126)
+* 🔑 Key:   
+* 🎓 Source:  
+* 🌱 Motivation: 
+* 💊 Methodology:
+* 📐 Exps:
+* 💡 Ideas: 
 
 
 #### 8. [Hierarchical Representations for Efficient Architecture Search](https://shimo.im/sheets/TkdXd9ptKTjDY83R/MODOC)
@@ -350,7 +487,7 @@ trained weights
       * 用了Augmentation（flip）来训练encoder
 
 
-11. [ProxylessNAS: Direct Neural Architecture Search on Target Task and Hardware](https://arxiv.org/abs/1812.00332)
+#### 11. [ProxylessNAS: Direct Neural Architecture Search on Target Task and Hardware](https://arxiv.org/abs/1812.00332)
 * 🔑 Key:  
   * 解决Gradient-based的方法有大量Memory Consumption，进而需要ProxyTask的协助
   * multi-binary mask choice as path-level pruning       
