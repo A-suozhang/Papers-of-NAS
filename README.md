@@ -411,6 +411,39 @@ trained weights
 * 📐 Exps:
 * 💡 Ideas: 
 
+#### 7-8. [MergeNAS]()
+* 🔑 Key:   
+	* 把darts中各种操作都用共享一个很大的卷积核的形式
+* 🎓 Source:  
+* 🌱 Motivation: 
+	* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200814201552.png)
+* 💊 Methodology:
+* 📐 Exps:
+* 💡 Ideas: 
+
+#### 7-9. [TF-NAS: Rethinking Three Search Freedoms of Latency-Constrained Differentiable Neural Architecture Search](http://arxiv.org/abs/2008.05314)
+* 🔑 Key:   
+	* 针对的是有flops/latency限制的darts问题
+	* 3个层面的自由度
+		* Operational
+		* Depth(Shortcut)
+		* Width
+* 🎓 Source:  
+	* CRIPAC
+* 🌱 Motivation: 
+* 💊 Methodology:
+	* search space是类似effiicentdet的ss,mobilenetV3-based,layer-wise的，没有cell的概念以及搜索内部的connection
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200904194834.png)
+	* 采用了efficientdet的ss,op层面提出了一种bi-sample，是gumble-sample的一个改进，前向独立两组op参数，梯度一起传
+		* during gumble, cause sampled, only 1 path will have gradient update at once, the same op easier to be chosen next time, which stuck at 
+		* so sample 2 path(plain fix)
+	* 认为shortcut这种op应该和一般的op分开处理，depth用了一种shortcut sinking的方法，防止浪费掉的计算(前面shortcut了但是后面计算出来的东西没有被连上shortcut)
+		* unstable, early search will result in shallow net and big jitter(cause easier falls into shortcut, such none-param op)
+	* width采用了类似morphnet的实现方式，进行采样的时候就进行了变化
+		* 有一个multi-stage，先缩放前半段网络
+* 📐 Exps:
+* 💡 Ideas: 
+
 
 #### 8. [Hierarchical Representations for Efficient Architecture Search](https://shimo.im/sheets/TkdXd9ptKTjDY83R/MODOC)
 * 🔑 Key:     
@@ -916,6 +949,48 @@ trained weights
 	* depth-wise + point-wise = depth separable conv
 		* for binary the channel(depth)wise, less binary numbers are added together and has low precision, so cannot converge
 		* so group conv could be a surrogate
+
+
+### [Beyond Network Pruning: a Joint Search-and-Training Approach](http://see.xidian.edu.cn/faculty/wsdong/Papers/Conference/ijcai20.pdf)
+* 🔑 Key:   
+	* Joint search & tranining for pruning
+* 🎓 Source:  
+	* Xdiian - IJCAI2020
+* 🌱 Motivation: 
+* 💊 Methodology:
+	* Sampler: random pertubation towards \alphas (each filter has a weight alpha)
+		* alpha calculated with softmax-ish operation within the layer
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200831112510.png)
+	* RL-agent thresh-neti(mlp): input alphas(budegt) - output threhsold
+		* reward is the mean acc & the param size(minus)
+	* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200831112448.png)
+
+* 📐 Exps:
+* 💡 Ideas: 
+
+
+### [Densely Connected Search Space for More Flexible Neural Architecture Search](http://arxiv.org/abs/1906.09607)
+* 🔑 Key:   
+	* Dense SS + Routing Block + chained estimation
+* 🎓 Source:  
+	* CVPR2020 - HUST
+* 🌱 Motivation: 
+	* donot manual set the width/depth
+* 💊 Methodology:
+	* basic layer: shortcut / mbconv of ks{3,5,7} - expansion{3,6}
+	* rounting block(aggregate former feature_map / transmit it to subsquent)
+		* shape-alignment ones
+		* multiple input of different size, layer-transform to the same
+			* after transformation, aggregated
+		* softmax for m paths connected to m subsequential blocks
+	* Chained cost estimation algo
+		* since cant simply add all blocks, generate a LUT
+	* drop-pathing strategy
+	* Viterbi algo for deriving the path with the most prob
+* 📐 Exps:
+* 💡 Ideas: 
+	* weights-training warmup
+	* the ops are easier converged and cause the shallow arch
 
 
 
