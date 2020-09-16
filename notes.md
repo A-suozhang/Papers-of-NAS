@@ -739,6 +739,43 @@ trained weights
 * 📐 Exps:       
 * 💡 Ideas:  
 
+### [Understanding and Robustifying Differentiable Architecture Search](http://arxiv.org/abs/1909.09656)
+
+* 🔑 Key:   
+	* use eigenvalue(Hessian Matrix) to analyze and find regularization for better darts
+* 🎓 Source:  
+	* ICLR2020
+* 🌱 Motivation: 
+	* darts often fail(sometimes no better than random search)
+	* dominant eigenvalue has strong relation with generalization
+	* need2 find arch with smaller hessian matrix
+	* recent study about local minima
+		* smaller batch size could land in flatten minima
+		* when overfitting, often a sharp region in the space
+* 💊 Methodology:
+	* early stop based on eigenvalue
+* 📐 Exps:
+	* plot the largest eigenvalue of the hessian matrix of the valid-loss w.r.t alphas
+	* Augmentation
+		* via data augmentataion: Cutout and scheduled DropPath
+		* regularizing inner objective
+			* adaptiave reg: increase reg whenever the eigenvalue increases
+		* run multiple search with different regularization strength
+* 💡 Ideas: 
+	* darts will choose relatively param-free ops(even the harmful noise operation)
+	* darts could find global minima in small ss, but after 40 epoch, the supernet acc deteriorated
+		* but the valid acc seems converge, indicating that the structure params alpha is overfitting in valid set
+	* dont think dart's optimal is from the bi-level optimization's iterative update
+		* cause nearly all cases could converge
+	* the `prunning`(discretecize) actually choose anotehr \alpha 
+		* sharp minima(large curvature) also casue more harmful discretecize
+		* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200914111254.png)
+	* modifying the landscape of the inner objective could redirect the outer variables to flatter areas of the architectural spaceLtrain
+	* often run on seach-space multiple times(search) and choose the best arch
+
+
+
+
 
 ### [Improved one-shot NAS by suppressing posteriror fading](http://xxx.itp.ac.cn/pdf/1910.02543v1)
 * 🔑 Key:  
@@ -954,6 +991,8 @@ trained weights
 
 
 
+
+
 ## Reference
 
 * [Awesome-NAS](https://github.com/D-X-Y/Awesome-NAS)
@@ -967,5 +1006,3 @@ trained weights
 * 💊 Methodology:
 * 📐 Exps:
 * 💡 Ideas: 
-
-
