@@ -48,6 +48,8 @@ MTL-NAS: Task-Agnostic Neural Architecture Search Towards General-Purpose Multi-
 NAS-FCOS: Fast Neural Architecture Search for Object Detection | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_NAS-FCOS_Fast_Neural_Architecture_Search_for_Object_Detection_CVPR_2020_paper.pdf | Ning Wang, Yang Gao, Hao Chen, Peng Wang, Zhi Tian, Chunhua Shen, Yanning Zhang
 GP-NAS: Gaussian Process Based Neural Architecture Search | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/Li_GP-NAS_Gaussian_Process_Based_Neural_Architecture_Search_CVPR_2020_paper.pdf | Zhihang Li, Teng Xi, Jiankang Deng, Gang Zhang, Shengzhao Wen, Ran He
 Block-Wisely Supervised Neural Architecture Search With Knowledge Distillation | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/Li_Block-Wisely_Supervised_Neural_Architecture_Search_With_Knowledge_Distillation_CVPR_2020_paper.pdf | Changlin Li, Jiefeng Peng, Liuchun Yuan, Guangrun Wang, Xiaodan Liang, Liang Lin, Xiaojun Chang
+MiLeNAS: Efficient Neural Architecture Search via Mixed-Level Reformulation | CVPR2020 | http://arxiv.org/abs/2003.12238v1 | Chaoyang He, Haishan Ye, Li Shen, Tong Zhang
+  
 
 ---
 
@@ -78,3 +80,11 @@ Butterfly Transform: An Efficient FFT Based Neural Architecture Design | CVPR202
 Adaptive Loss-Aware Quantization for Multi-Bit Networks | CVPR2020 | http://arxiv.org/abs/1912.08883v4 | Zhongnan Qu, Zimu Zhou, Yun Cheng, Lothar Thiele
 AdaBits: Neural Network Quantization With Adaptive Bit-Widths | CVPR2020 | http://arxiv.org/abs/1912.09666v2 | Qing Jin, Linjie Yang, Zhenyu Liao
 Automatic Neural Network Compression by Sparsity-Quantization Joint Learning: A Constrained Optimization-Based Approach | CVPR2020 | http://arxiv.org/abs/1910.05897v4 | Haichuan Yang, Shupeng Gui, Yuhao Zhu, Ji Liu
+NeuralScale: Efficient Scaling of Neurons for Resource-Constrained Deep Neural Networks | CVPR2020 | http://arxiv.org/abs/2006.12813v1 | Eugene Lee, Chen-Yi Lee
+BiDet: An Efficient Binarized Object Detector | CVPR2020 | http://arxiv.org/abs/2003.03961v1 | Ziwei Wang, Ziyi Wu, Jiwen Lu, Jie Zhou
+Resolution Adaptive Networks for Efficient Inference | CVPR2020 | http://arxiv.org/abs/2003.07326v5 | Le Yang, Yizeng Han, Xi Chen, Shiji Song, Jifeng Dai, Gao Huang
+ECA-Net: Efficient Channel Attention for Deep Convolutional Neural Networks | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/Wang_ECA-Net_Efficient_Channel_Attention_for_Deep_Convolutional_Neural_Networks_CVPR_2020_paper.pdf | Qilong Wang, Banggu Wu, Pengfei Zhu, Peihua Li, Wangmeng Zuo, Qinghua Hu
+Towards Efficient Model Compression via Learned Global Ranking | CVPR2020 | http://arxiv.org/abs/1904.12368v2 | Ting-Wu Chin, Ruizhou Ding, Cha Zhang, Diana Marculescu
+L2-GCN: Layer-Wise and Learned Efficient Training of Graph Convolutional Networks | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/You_L2-GCN_Layer-Wise_and_Learned_Efficient_Training_of_Graph_Convolutional_Networks_CVPR_2020_paper.pdf | Yuning You, Tianlong Chen, Zhangyang Wang, Yang Shen
+Data-Efficient Semi-Supervised Learning by Reliable Edge Mining | CVPR2020 | https://openaccess.thecvf.com/content_CVPR_2020/papers/Chen_Data-Efficient_Semi-Supervised_Learning_by_Reliable_Edge_Mining_CVPR_2020_paper.pdf | Peibin Chen, Tao Ma, Xu Qin, Weidi Xu, Shuchang Zhou
+Few Sample Knowledge Distillation for Efficient Network Compression | CVPR2020 | http://arxiv.org/abs/1812.01839v3 | Tianhong Li, Jianguo Li, Zhuang Liu, Changshui Zhang

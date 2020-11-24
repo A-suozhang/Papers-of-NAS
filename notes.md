@@ -328,11 +328,16 @@ trained weights
 
 #### 7-6. [Fair DARTS: Eliminating Unfair Advantages in Differentiable Architecture Search](https://arxiv.org/abs/1911.12126)
 * 🔑 Key:   
+	* Improving Darts by Solving 2 problems: Unfair Competition and Discretization Discrepancy
 * 🎓 Source:  
+	* Xiaomi
 * 🌱 Motivation: 
+	* independent weight for each op, to avoid unfair competition
+	* Zero-one Loss to shorten the discretization error
 * 💊 Methodology:
 * 📐 Exps:
 * 💡 Ideas: 
+	* adding gaussian noise would also prove to achieve better results
 
 #### 7-7. [Efficient Neural Architecture Search via Proximal Iterations](https://arxiv.org/abs/1905.13577)
 * 🔑 Key:   
@@ -422,6 +427,17 @@ trained weights
 * 📐 Exps:       
 * 💡 Ideas:  
 
+### 7-b. [GDAS - Searching for A Robust Neural Architecture in Four GPU Hours](http://arxiv.org/abs/1910.04465)
+* 🔑 Key: 
+  * **Gumble Softmax** in DARTS    
+* 🎓 Source:      
+* 🌱 Motivation:  
+* 💊 Methodology: 
+	* Every Single Pass only gumble sample 1 path for inference(avoid the exclusion in unfair competition)
+* 📐 Exps:       
+* 💡 Ideas:  
+	* Fix(use designed reduction cell, only search normal cell)
+	* Fail on imgnet
 
 
 #### 10. [NAO-Neural Architecture Optimization](https://arxiv.org/abs/1808.07233)
@@ -976,21 +992,78 @@ trained weights
 * 💡 Ideas: 
 
 
+### [Single Path One-Shot Neural Architecture Search with Uniform Sampling](https://arxiv.org/abs/1904.00420)
+* 🔑 Key:   
+	* Focus on the Shared-weights Co-adaption Problem
+* 🎓 Source:  
+	* Megvii
+* 🌱 Motivation: 
+	* Question why the supernet weight is optimal for the subnetwork
+	* Current method try to decouple the weight using droppath, but the optimization rely on the drop-path hyper-param
+		* thus the co-adaption could be reduced
+* 💊 Methodology:
+	* Design a SuperNet, all subnets are single-pathed, alleviate the co-adaption, **equally train all subnet
+	* Common Practice
+		* Decouple the shared-weights training into 2 steps:1. optimize supernet-weights 2. optimize the sampled arch
+	* Single-Path SuperNet & Uniform Sampling
+		* Principle: All subnet should be trained simultaneously when the super-net training
+		* A stochastic Supernet
+			* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200916164149.png)
+	* Difference with other methods that arch are sampled from the distribution
+		* the distribution is fixed as uniform without updating
+		* thinks it will make the architecture parameter highly related with the training
+	* Evo search
+* 📐 Exps:
+* 💡 Ideas: 
+	* Channel Number search - prelocate with full channels num, sample channel and mask accordingly
+	* Random Sample Path is really good for one-shot???
+
+
 ### [Angle-based Search Space Shrinking for Neural Architecture Search](https://arxiv.org/abs/2004.13431)
 
 * 🔑 Key:   
-	* darts flow
+	* weight-sharing
 	* use the weight's angle with random init as the criterion for dropping op
+* 🎓 Source:  
+	* Megvii
+* 🌱 Motivation: 
+* 💊 Methodology:
+	* Multistage, at each stage, 1st train the supernet with uniform sampling for a few epochs, then use the angle-based metric to determine, lowest rank op will be dropped(Progressively Prune the SS)
+	* ![](https://github.com/A-suozhang/MyPicBed/raw/master//img/20200916170645.png)
+	* Angle-based Metric:
+		* the angel between the initialization and the trained weight
+		* Compared with: Acc-based and Magnitude-based
+	* Could insert in many flows
+* 📐 Exps:
+* 💡 Ideas: 
+	* angle's good property - scale-invariant
+
+### [GroSS: Group-Size Series Decomposition forGrouped Architecture Search](http://arxiv.org/abs/1912.00673)
+
+* 🔑 Key:   
+	* Differentiable Search for Group
+* 🎓 Source:  
+* 🌱 Motivation: 
+	* Group-size Series decomposition - mathematical formulation of a series of approximations of increasing rank terms
+* 💊 Methodology:
+* 📐 Exps:
+* 💡 Ideas: 
+
+### [A Surgery of the Neural Architecture Evaluators](http://arxiv.org/abs/2008.03064)
+
+* 🔑 Key:   
+	* Evaluate the One-shot Methods, finding the evaluation correlation
 * 🎓 Source:  
 * 🌱 Motivation: 
 * 💊 Methodology:
 * 📐 Exps:
 * 💡 Ideas: 
-
-
-
-
-
+	* Findings:
+		* layer proxy bad, channel proxy good
+		* One-shot supernet train distinguish at first
+		* de-isomorphic sampling can help avoid over-estimation of simple arch
+		* one-shot tend to prefer smaller arch
+	* Proxy和shared weights的关系? 都可能会引入RankingCorrelation但是proxy是不是只用在one-shot里？
 
 
 ## Reference

@@ -1,8 +1,8 @@
-# Awesome-Neural-Architecture-Search
+# Papers-of-Neural-Architecture-Search
 
 > Some nas paper for self-reference
 > **paper digest at [notes.md](./notes.md)**
-> Unlike [Awesome-NAS](https://github.com/D-X-Y/Awesome-NAS), arrange papers according to components
+> Different from [Awesome-NAS](https://github.com/D-X-Y/Awesome-NAS), arrange papers according to components
 
 ## Paper List
 

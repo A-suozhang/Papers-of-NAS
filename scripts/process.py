@@ -2,7 +2,11 @@ import sys
 import re
 
 # print(sys.argv[1])
-FILE = sys.argv[1]
+# try sys.argv[1]:
+try:
+    FILE = sys.argv[1]
+except IndexError:
+    FILE = "../conf.md"
 
 with open(FILE, "r") as f:
     lines = f.readlines()
